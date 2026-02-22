@@ -23,7 +23,7 @@ public abstract class BaseEntity {
 
     @LastModifiedDate
     @Column(name = "updated_at")
-    protected OffsetDateTime updatedAt;
+    protected OffsetDateTime updatedAt = OffsetDateTime.now();
 
     @PrePersist
     void generateId() {
