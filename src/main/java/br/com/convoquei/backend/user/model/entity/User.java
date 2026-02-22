@@ -4,6 +4,9 @@ import br.com.convoquei.backend.shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.user.model.enums.UserStatus;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(
         name = "users",
@@ -27,8 +30,8 @@ public class User extends BaseEntity {
     @Column(length = 70, nullable = false)
     private String name;
 
-    @Column(length = 200, nullable = false, unique = true)
-    public String email;
+    @Column(length = 150, nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password_hash", columnDefinition = "TEXT")
     private String passwordHash;
@@ -42,6 +45,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private UserStatus status;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<UserAuthProvider> authProviders = new ArrayList<>();
 
     public String getName() {
         return name;
