@@ -4,7 +4,6 @@ import br.com.convoquei.backend._shared.seedwork.BaseEntity;
 import br.com.convoquei.backend.organization.model.enums.OrganizationStatus;
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(
         name = "organization",

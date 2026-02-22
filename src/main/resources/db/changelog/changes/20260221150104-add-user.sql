@@ -12,13 +12,6 @@ CREATE TABLE users
     avatar_url        TEXT,
     is_email_verified BOOLEAN                                NOT NULL,
     status            VARCHAR(255)                           NOT NULL,
-    CONSTRAINT pk_users PRIMARY KEY (id)
+    CONSTRAINT pk_users PRIMARY KEY (id),
+    CONSTRAINT uc_users_email UNIQUE (email)
 );
-
--- changeset ronal:1771773568106-2
-ALTER TABLE users
-    ADD CONSTRAINT uc_users_email UNIQUE (email);
-
--- changeset ronal:1771773568106-3
-CREATE INDEX idx_user_email ON users (email);
-
