@@ -39,6 +39,7 @@ public class JwtService {
                 .issuedAt(now)
                 .expiresAt(now.plus(props.getAccessTokenMinutes(), ChronoUnit.MINUTES))
                 .claim("uid", userId.toString())
+                .claim("typ", "access")
                 .claim("roles", roles)
                 .build();
 
