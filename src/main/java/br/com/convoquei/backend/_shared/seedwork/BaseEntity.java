@@ -1,4 +1,4 @@
-package br.com.convoquei.backend.shared.model.entity;
+package br.com.convoquei.backend._shared.seedwork;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.LastModifiedDate;

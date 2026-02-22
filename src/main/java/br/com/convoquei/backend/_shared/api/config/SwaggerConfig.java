@@ -1,4 +1,4 @@
-package br.com.convoquei.backend.shared.api.config;
+package br.com.convoquei.backend._shared.api.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.context.annotation.Bean;

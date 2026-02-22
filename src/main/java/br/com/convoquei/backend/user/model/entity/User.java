@@ -1,11 +1,12 @@
 package br.com.convoquei.backend.user.model.entity;
 
-import br.com.convoquei.backend.shared.model.entity.BaseEntity;
+import br.com.convoquei.backend._shared.seedwork.BaseEntity;
 import br.com.convoquei.backend.user.model.enums.UserStatus;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(
@@ -49,6 +50,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<UserAuthProvider> authProviders = new ArrayList<>();
 
+    public UUID getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -57,11 +62,19 @@ public class User extends BaseEntity {
         return email;
     }
 
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
     public String getAvatarUrl() {
         return avatarUrl;
     }
 
     public boolean isEmailVerified() {
         return isEmailVerified;
+    }
+
+    public boolean isActive() {
+        return this.status == UserStatus.ACTIVE;
     }
 }

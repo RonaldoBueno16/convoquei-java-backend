@@ -1,3 +1,7 @@
+app:
+  jwt:
+    secret-base64: "vS1hkIMbyF75F4RDglgO8GbFq0NFIKlPmRbyAhSoVtU="
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/convoquei
@@ -18,7 +22,6 @@ logging:
     org.hibernate.sql: debug
     org.hibernate.orm.jdbc.bind: trace
     org.hibernate.orm.jdbc.extract: trace
-
 
 springdoc:
   api-docs:

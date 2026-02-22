@@ -1,6 +1,6 @@
 package br.com.convoquei.backend.user.services;
 
-import br.com.convoquei.backend.shared.exceptions.DomainConflictException;
+import br.com.convoquei.backend._shared.exceptions.DomainConflictException;
 import br.com.convoquei.backend.user.model.dto.request.CreateUserRequest;
 import br.com.convoquei.backend.user.model.dto.response.UserResponse;
 import br.com.convoquei.backend.user.model.entity.User;

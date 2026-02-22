@@ -1,14 +1,18 @@
-package br.com.convoquei.backend.config;
+package br.com.convoquei.backend._shared.config.authorization;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
@@ -22,36 +26,37 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // API REST: normalmente desabilita CSRF (principalmente se usar JWT/stateless)
                 .csrf(AbstractHttpConfigurer::disable)
-
-                // Se for usar token depois, já deixa stateless
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
                 .authorizeHttpRequests(auth -> auth
-                        // liberar login/registro
                         .requestMatchers(HttpMethod.POST,  "/api/v**/auth/**").permitAll()
-
-                        // liberar swagger (se estiver usando springdoc)
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-
-                        // TODO: se tiver healthcheck/actuator:
-                        // .requestMatchers("/actuator/health").permitAll()
-
-                        // qualquer outra rota precisa estar autenticada
                         .anyRequest().authenticated()
                 )
-
-                // Para API REST, normalmente desliga formLogin.
-                .httpBasic(Customizer.withDefaults()) // pode manter temporariamente p/ testar
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .bearerTokenResolver(bearerTokenResolver())
+                        .jwt(Customizer.withDefaults())
+                )
                 .formLogin(AbstractHttpConfigurer::disable)
-
                 .build();
+    }
+
+    @Bean
+    BearerTokenResolver bearerTokenResolver() {
+        DefaultBearerTokenResolver r = new DefaultBearerTokenResolver();
+        r.setAllowFormEncodedBodyParameter(false);
+        r.setAllowUriQueryParameter(false);
+        return r;
     }
 }

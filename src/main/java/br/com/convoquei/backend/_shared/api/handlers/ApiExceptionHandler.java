@@ -1,11 +1,12 @@
-package br.com.convoquei.backend.shared.api.handlers;
+package br.com.convoquei.backend._shared.api.handlers;
 
-import br.com.convoquei.backend.shared.exceptions.DomainConflictException;
-import br.com.convoquei.backend.shared.exceptions.DomainException;
+import br.com.convoquei.backend._shared.exceptions.DomainConflictException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,6 +48,7 @@ public class ApiExceptionHandler {
         problem.setType(URI.create("urn:convoquei:problem:malformed-json"));
         return problem;
     }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ProblemDetail handleMissingParameter(MissingServletRequestParameterException ex, HttpServletRequest request) {
         var problem = base(HttpStatus.BAD_REQUEST, "Parâmetro obrigatório ausente: " + ex.getParameterName(), request);
@@ -75,6 +77,22 @@ public class ApiExceptionHandler {
     public ProblemDetail handleDomain(DomainConflictException ex, HttpServletRequest request) {
         var problem = base(HttpStatus.CONFLICT, ex.getMessage(), request);
         problem.setTitle("Não foi possível processar a requisição");
+        problem.setType(URI.create("urn:convoquei:problem:domain-error"));
+        return problem;
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ProblemDetail handleDomain(InternalAuthenticationServiceException ex, HttpServletRequest request) {
+        var problem = base(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
+        problem.setTitle("Não foi possível processar a requisição");
+        problem.setType(URI.create("urn:convoquei:problem:domain-error"));
+        return problem;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ProblemDetail handleDomain(BadCredentialsException ex, HttpServletRequest request) {
+        var problem = base(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
+        problem.setTitle("Credenciais Inválidas");
         problem.setType(URI.create("urn:convoquei:problem:domain-error"));
         return problem;
     }

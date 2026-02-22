@@ -1,4 +1,4 @@
-package br.com.convoquei.backend.shared.exceptions;
+package br.com.convoquei.backend._shared.exceptions;
 
 public class DomainConflictException extends RuntimeException {
     public DomainConflictException(String message) {

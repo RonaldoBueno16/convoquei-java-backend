@@ -13,4 +13,11 @@ spring:
     resources:
       add-mappings: false
   quartz:
-    auto-startup: false
+    auto-startup: true
+
+app:
+  jwt:
+    issuer: "convoquei-api"
+    secret-base64: "base64-encoded-replace-me"
+    access-token-minutes: 60
+    refresh-token-days: 30
