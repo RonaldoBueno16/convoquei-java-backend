@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: convoquei-postgres
+    environment:
+      POSTGRES_DB: convoquei
+      POSTGRES_USER: convoquei
+      POSTGRES_PASSWORD: convoquei
+    ports:
+      - "5432:5432"
+    volumes:
+      - convoquei_pgdata:/var/lib/postgresql/data
+
+volumes:
+  convoquei_pgdata:

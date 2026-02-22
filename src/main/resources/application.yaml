@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: convoquei-backend
+  profiles:
+    active: dev
