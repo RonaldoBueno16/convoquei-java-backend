@@ -1,6 +1,6 @@
-package br.com.convoquei.backend._shared.config.jwt.service;
+package br.com.convoquei.backend._shared.security.jwt.service;
 
-import br.com.convoquei.backend._shared.config.jwt.JwtProperties;
+import br.com.convoquei.backend._shared.security.jwt.JwtProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;

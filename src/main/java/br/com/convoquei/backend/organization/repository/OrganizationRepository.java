@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-interface OrganizationRepository extends JpaRepository<Organization, UUID> {
+public interface OrganizationRepository extends JpaRepository<Organization, UUID> {
+    public boolean existsBySlug(String slug);
 }

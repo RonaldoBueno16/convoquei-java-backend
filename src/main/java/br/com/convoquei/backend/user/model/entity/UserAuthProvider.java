@@ -17,10 +17,6 @@ import jakarta.persistence.*;
                         name = "uk_user_provider",
                         columnNames = {"user_id", "provider"}
                 )
-        },
-        indexes = {
-                @Index(name = "idx_uap_user_id", columnList = "user_id"),
-                @Index(name = "idx_uap_provider_provider_user_id", columnList = "provider, provider_user_id")
         }
 )
 public class UserAuthProvider extends BaseEntity {

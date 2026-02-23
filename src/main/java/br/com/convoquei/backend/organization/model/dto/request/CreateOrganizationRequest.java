@@ -1,6 +1,8 @@
 package br.com.convoquei.backend.organization.model.dto.request;
 
-public record CreateOrganizationRequest(
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-) {
-}
+public record CreateOrganizationRequest(
+    @NotBlank @Size(min = 3, max = 70) String name
+) { }

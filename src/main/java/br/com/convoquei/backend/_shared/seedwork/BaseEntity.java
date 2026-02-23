@@ -37,4 +37,16 @@ public abstract class BaseEntity {
     protected void onPrePersist() {
 
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

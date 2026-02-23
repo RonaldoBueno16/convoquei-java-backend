@@ -7,7 +7,10 @@ import br.com.convoquei.backend.user.model.entity.User;
 import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 
 @Entity
 @Table(
@@ -17,15 +20,19 @@ import java.util.EnumSet;
                         name = "uk_organization_member_organization_user",
                         columnNames = {"organization_id", "user_id"}
                 )
-        },
-        indexes = {
-                @Index(name = "idx_organization_member_organization_id", columnList = "organization_id"),
-                @Index(name = "idx_organization_member_user_id", columnList = "user_id")
         }
 )
 public class OrganizationMember extends BaseEntity {
 
     protected OrganizationMember() {
+    }
+
+    public OrganizationMember(Organization organization, User user) {
+        this.organization = organization;
+        this.user = user;
+        this.status = OrganizationMemberStatus.ACTIVE;
+        this.joinedAt = OffsetDateTime.now();
+        this.leftAt = null;
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -44,8 +51,8 @@ public class OrganizationMember extends BaseEntity {
     )
     private User user;
 
-    @Column(name = "permissions_mask")
-    private Long permissionsMask = 0L;
+    @OneToMany(mappedBy = "organizationMember", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<OrganizationMemberRole> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 30, nullable = false)
@@ -57,13 +64,19 @@ public class OrganizationMember extends BaseEntity {
     @Column(name = "left_at", columnDefinition = "TIMESTAMPTZ")
     private OffsetDateTime leftAt;
 
+    public boolean isOwner() {
+        return getPermissions().stream().anyMatch(OrganizationPermission::isOwner);
+    }
+
     @Transient
     public EnumSet<OrganizationPermission> getPermissions() {
-        long mask = permissionsMask != null ? permissionsMask : 0L;
+        long combinedMask = roles.stream()
+                .mapToLong(omr -> omr.getOrganizationRole().getPermissionsMask())
+                .reduce(0L, (a, b) -> a | b);
 
         EnumSet<OrganizationPermission> permissions = EnumSet.noneOf(OrganizationPermission.class);
         for (OrganizationPermission permission : OrganizationPermission.values()) {
-            if ((mask & permission.mask()) != 0) {
+            if ((combinedMask & permission.mask()) != 0) {
                 permissions.add(permission);
             }
         }
@@ -71,33 +84,18 @@ public class OrganizationMember extends BaseEntity {
         return permissions;
     }
 
-    @Override
-    protected void onPrePersist() {
-        if (permissionsMask == null) {
-            permissionsMask = 0L;
-        }
-    }
-
-    public void setPermissions(EnumSet<OrganizationPermission> permissions) {
-        long mask = 0L;
-        for (OrganizationPermission permission : permissions) {
-            mask |= permission.mask();
-        }
-        this.permissionsMask = mask;
-    }
-
     public boolean hasPermission(OrganizationPermission permission) {
-        long mask = permissionsMask != null ? permissionsMask : 0L;
-        return (mask & permission.mask()) != 0;
+        if(isOwner())
+            return true;
+
+        if(permission == OrganizationPermission.OWNER)
+            return false;
+
+        return getPermissions().contains(permission);
     }
 
-    public void grantPermission(OrganizationPermission permission) {
-        long mask = permissionsMask != null ? permissionsMask : 0L;
-        this.permissionsMask = mask | permission.mask();
-    }
-
-    public void revokePermission(OrganizationPermission permission) {
-        long mask = permissionsMask != null ? permissionsMask : 0L;
-        this.permissionsMask = mask & ~permission.mask();
+    public void addRole(OrganizationRole role) {
+        OrganizationMemberRole memberRole = new OrganizationMemberRole(this, role);
+        this.roles.add(memberRole);
     }
 }

@@ -1,4 +1,4 @@
-package br.com.convoquei.backend._shared.config.jwt;
+package br.com.convoquei.backend._shared.security.jwt;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

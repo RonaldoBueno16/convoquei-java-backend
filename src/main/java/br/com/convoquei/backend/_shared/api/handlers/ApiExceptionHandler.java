@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
@@ -115,6 +116,14 @@ public class ApiExceptionHandler {
         var problem = base(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro inesperado.", request);
         problem.setTitle("Erro interno");
         problem.setType(URI.create("urn:convoquei:problem:internal-error"));
+        return problem;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail handleGeneric(AccessDeniedException ex, HttpServletRequest request) {
+        var problem = base(HttpStatus.FORBIDDEN, ex.getMessage(), request);
+        problem.setTitle("Acesso Negado");
+        problem.setType(URI.create("urn:convoquei:problem:forbidden"));
         return problem;
     }
 

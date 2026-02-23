@@ -1,4 +1,4 @@
-package br.com.convoquei.backend._shared.config.jwt;
+package br.com.convoquei.backend._shared.security.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
