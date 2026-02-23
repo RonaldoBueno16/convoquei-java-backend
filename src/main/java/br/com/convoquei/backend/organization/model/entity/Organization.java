@@ -1,7 +1,9 @@
 package br.com.convoquei.backend.organization.model.entity;
 
+import br.com.convoquei.backend._shared.exceptions.DomainBusinessRuleException;
 import br.com.convoquei.backend._shared.seedwork.BaseEntity;
 import br.com.convoquei.backend.organization.model.enums.OrganizationStatus;
+import br.com.convoquei.backend.organizationInvite.model.entity.OrganizationInvite;
 import br.com.convoquei.backend.user.model.entity.User;
 import jakarta.persistence.*;
 
@@ -45,9 +47,23 @@ public class Organization extends BaseEntity {
     @Column(name = "status", nullable = false, length = 30)
     private OrganizationStatus status;
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<OrganizationMember> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private final List<OrganizationRole> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<OrganizationInvite> invites = new ArrayList<>();
+
+    public OrganizationInvite createInvite(OrganizationMember member, String email) {
+        if (!member.getOrganization().getId().equals(this.getId()))
+            throw new DomainBusinessRuleException("O membro especificado não pertence à organização para criar um convite.");
+
+        OrganizationInvite invite = new OrganizationInvite(this, member, email);
+
+        this.invites.add(invite);
+
+        return invite;
+    }
 }

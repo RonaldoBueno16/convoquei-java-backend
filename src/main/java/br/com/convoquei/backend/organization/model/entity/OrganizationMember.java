@@ -98,4 +98,8 @@ public class OrganizationMember extends BaseEntity {
         OrganizationMemberRole memberRole = new OrganizationMemberRole(this, role);
         this.roles.add(memberRole);
     }
+
+    public Organization getOrganization() {
+        return organization;
+    }
 }

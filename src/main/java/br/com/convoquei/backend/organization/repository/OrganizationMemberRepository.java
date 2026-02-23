@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface OrganizationMemberRepository extends JpaRepository<OrganizationMember, UUID> {
     Optional<OrganizationMember> findByOrganizationIdAndUserIdAndStatus(UUID organizationId, UUID userId, OrganizationMemberStatus status);
+    boolean existsByOrganizationIdAndUserIdAndStatus(UUID organizationId, UUID userId, OrganizationMemberStatus status);
+    boolean existsByOrganizationIdAndUserEmailIgnoreCase(UUID organizationId, String email);
 }
