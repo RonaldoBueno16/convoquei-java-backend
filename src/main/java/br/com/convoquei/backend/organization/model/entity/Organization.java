@@ -5,6 +5,7 @@ import br.com.convoquei.backend._shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.organization.model.enums.OrganizationStatus;
 import br.com.convoquei.backend.organizationInvite.model.entity.OrganizationInvite;
 import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMember;
+import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMemberRole;
 import br.com.convoquei.backend.organizationRole.model.entity.OrganizationRole;
 import br.com.convoquei.backend.user.model.entity.User;
 import jakarta.persistence.*;
@@ -47,6 +48,9 @@ public class Organization extends BaseEntity {
 
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<OrganizationRole> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<OrganizationMemberRole> memberRoles = new ArrayList<>();
 
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrganizationInvite> invites = new ArrayList<>();

@@ -2,8 +2,12 @@ package br.com.convoquei.backend.organizationRole.model.entity;
 
 import br.com.convoquei.backend._shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.organization.model.entity.Organization;
+import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMemberRole;
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationDefaultSystemRole;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "organization_role")
@@ -26,6 +30,9 @@ public class OrganizationRole extends BaseEntity {
 
     @Column(name = "system_key", nullable = true, length = 50)
     private String systemKey;
+
+    @OneToMany(mappedBy = "organizationRole", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<OrganizationMemberRole> memberRoles = new ArrayList<>();
 
     public static OrganizationRole createSystemRole(Organization organization, OrganizationDefaultSystemRole defaultRole) {
         OrganizationRole role = new OrganizationRole();
