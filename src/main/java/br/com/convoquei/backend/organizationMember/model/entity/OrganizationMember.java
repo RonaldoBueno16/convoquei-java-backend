@@ -1,14 +1,15 @@
-package br.com.convoquei.backend.organization.model.entity;
+package br.com.convoquei.backend.organizationMember.model.entity;
 
-import br.com.convoquei.backend._shared.seedwork.BaseEntity;
-import br.com.convoquei.backend.organization.model.enums.OrganizationMemberStatus;
-import br.com.convoquei.backend.organization.model.enums.OrganizationPermission;
+import br.com.convoquei.backend._shared.model.entity.BaseEntity;
+import br.com.convoquei.backend.organization.model.entity.Organization;
+import br.com.convoquei.backend.organizationRole.model.entity.OrganizationRole;
+import br.com.convoquei.backend.organizationMember.model.enums.OrganizationMemberStatus;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 import br.com.convoquei.backend.user.model.entity.User;
 import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -102,4 +103,14 @@ public class OrganizationMember extends BaseEntity {
     public Organization getOrganization() {
         return organization;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public OrganizationMemberStatus getStatus() {
+        return status;
+    }
+
+
 }

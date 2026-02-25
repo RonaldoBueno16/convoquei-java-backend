@@ -1,6 +1,6 @@
 package br.com.convoquei.backend.user.model.entity;
 
-import br.com.convoquei.backend._shared.seedwork.BaseEntity;
+import br.com.convoquei.backend._shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.user.model.enums.UserStatus;
 import jakarta.persistence.*;
 
@@ -26,6 +26,7 @@ public class User extends BaseEntity {
         this.passwordHash = passwordHash;
         this.isEmailVerified = false;
         this.status = UserStatus.ACTIVE;
+        this.avatarUrl = "";
     }
 
     @Column(length = 70, nullable = false)
@@ -37,7 +38,7 @@ public class User extends BaseEntity {
     @Column(name = "password_hash", columnDefinition = "TEXT")
     private String passwordHash;
 
-    @Column(name = "avatar_url", columnDefinition = "TEXT")
+    @Column(name = "avatar_url", columnDefinition = "TEXT", nullable = false)
     private String avatarUrl;
 
     @Column(name = "is_email_verified", nullable = false)

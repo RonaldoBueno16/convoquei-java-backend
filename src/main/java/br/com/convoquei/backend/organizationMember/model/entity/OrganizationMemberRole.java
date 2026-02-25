@@ -1,6 +1,8 @@
-package br.com.convoquei.backend.organization.model.entity;
+package br.com.convoquei.backend.organizationMember.model.entity;
 
-import br.com.convoquei.backend._shared.seedwork.BaseEntity;
+import br.com.convoquei.backend._shared.model.entity.BaseEntity;
+import br.com.convoquei.backend.organization.model.entity.Organization;
+import br.com.convoquei.backend.organizationRole.model.entity.OrganizationRole;
 import jakarta.persistence.*;
 
 @Entity

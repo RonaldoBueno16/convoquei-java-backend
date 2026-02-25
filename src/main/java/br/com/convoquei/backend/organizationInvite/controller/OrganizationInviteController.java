@@ -3,7 +3,7 @@ package br.com.convoquei.backend.organizationInvite.controller;
 import br.com.convoquei.backend._shared.security.annotation.RequiredOrganizationPermission;
 import br.com.convoquei.backend.organizationInvite.model.dto.request.InviteMemberRequest;
 import br.com.convoquei.backend.organizationInvite.model.dto.response.OrganizationInviteResponse;
-import br.com.convoquei.backend.organization.model.enums.OrganizationPermission;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 import br.com.convoquei.backend.organizationInvite.services.OrganizationInviteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

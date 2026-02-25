@@ -1,11 +1,9 @@
-package br.com.convoquei.backend.organization.services;
+package br.com.convoquei.backend.organizationRole.services;
 
-import br.com.convoquei.backend.organization.model.entity.OrganizationMember;
-import br.com.convoquei.backend.organization.model.entity.OrganizationRole;
-import br.com.convoquei.backend.organization.model.enums.OrganizationMemberStatus;
-import br.com.convoquei.backend.organization.model.enums.OrganizationPermission;
-import br.com.convoquei.backend.organization.repository.OrganizationMemberRepository;
-import br.com.convoquei.backend.organization.repository.OrganizationRoleRepository;
+import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMember;
+import br.com.convoquei.backend.organizationMember.model.enums.OrganizationMemberStatus;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
+import br.com.convoquei.backend.organizationMember.repository.OrganizationMemberRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 

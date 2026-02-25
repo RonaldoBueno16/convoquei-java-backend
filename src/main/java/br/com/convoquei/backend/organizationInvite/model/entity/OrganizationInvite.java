@@ -1,8 +1,8 @@
 package br.com.convoquei.backend.organizationInvite.model.entity;
 
-import br.com.convoquei.backend._shared.seedwork.BaseEntity;
+import br.com.convoquei.backend._shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.organization.model.entity.Organization;
-import br.com.convoquei.backend.organization.model.entity.OrganizationMember;
+import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMember;
 import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;

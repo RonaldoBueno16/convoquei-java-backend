@@ -1,4 +1,4 @@
-package br.com.convoquei.backend.organization.model.enums;
+package br.com.convoquei.backend.organizationMember.model.enums;
 
 public enum OrganizationMemberStatus {
     ACTIVE,

@@ -1,6 +1,6 @@
-package br.com.convoquei.backend.organization.model.valueobject;
+package br.com.convoquei.backend.organizationRole.model.valueobject;
 
-import br.com.convoquei.backend.organization.model.enums.OrganizationPermission;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 
 import java.util.EnumSet;
 

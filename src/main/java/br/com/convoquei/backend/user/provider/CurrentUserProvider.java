@@ -1,8 +1,8 @@
 package br.com.convoquei.backend.user.provider;
 
-import br.com.convoquei.backend.organization.model.entity.OrganizationMember;
-import br.com.convoquei.backend.organization.model.enums.OrganizationMemberStatus;
-import br.com.convoquei.backend.organization.repository.OrganizationMemberRepository;
+import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMember;
+import br.com.convoquei.backend.organizationMember.model.enums.OrganizationMemberStatus;
+import br.com.convoquei.backend.organizationMember.repository.OrganizationMemberRepository;
 import br.com.convoquei.backend.user.model.entity.User;
 import br.com.convoquei.backend.user.repository.UserRepository;
 import org.springframework.security.access.AccessDeniedException;
@@ -33,6 +33,10 @@ public class CurrentUserProvider {
         return Optional.ofNullable(uuid).map(UUID::fromString);
     }
 
+    public UUID requireUserId() {
+        return userId().orElseThrow(() -> new AccessDeniedException("Usuário não autenticado."));
+    }
+
     public Optional<String> email() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if(!(auth instanceof JwtAuthenticationToken jwtAuth)) {
@@ -42,10 +46,10 @@ public class CurrentUserProvider {
         return Optional.ofNullable(jwtAuth.getToken().getClaimAsString("email"));
     }
 
-    public Optional<User> user() {
+    public User user() {
         UUID userId = extractUserIdFromAuthentication().orElseThrow(() -> new AccessDeniedException("Usuário não autenticado."));
 
-        return userRepository.findById(userId);
+        return userRepository.findById(userId).orElseThrow(() -> new AccessDeniedException("Usuário não encontrado."));
     }
 
     public Optional<OrganizationMember> organizationMembership(UUID organizationId) {

@@ -1,7 +1,7 @@
 package br.com.convoquei.backend.user.model.entity;
 
 
-import br.com.convoquei.backend._shared.seedwork.BaseEntity;
+import br.com.convoquei.backend._shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.user.model.enums.AuthProvider;
 import jakarta.persistence.*;
 
