@@ -13,6 +13,8 @@ public interface OrganizationMemberRepository extends BaseRepository<Organizatio
     @EntityGraph(attributePaths = {"user", "roles", "roles.organizationRole"})
     Optional<OrganizationMember> findByOrganizationIdAndUserIdAndStatus(UUID organizationId, UUID userId, OrganizationMemberStatus status);
 
+    Optional<OrganizationMember> findByIdAndOrganizationIdAndStatus(UUID id, UUID organizationId, OrganizationMemberStatus status);
+
     boolean existsByOrganizationIdAndUserIdAndStatus(UUID organizationId, UUID userId, OrganizationMemberStatus status);
 
     boolean existsByOrganizationIdAndUserEmailIgnoreCase(UUID organizationId, String email);

@@ -50,6 +50,10 @@ public class CurrentUserProvider {
         return userRepository.findById(requireUserId()).orElseThrow(() -> new AccessDeniedException("Usuário não encontrado."));
     }
 
+    public OrganizationMember requireOrganizationMembership(UUID organizationId) {
+        return organizationMembership(organizationId).orElseThrow(() -> new AccessDeniedException("Você não é membro desta organização."));
+    }
+
     public Optional<OrganizationMember> organizationMembership(UUID organizationId) {
         UUID userId = extractUserIdFromAuthentication().orElseThrow(() -> new AccessDeniedException("Usuário não autenticado."));
 

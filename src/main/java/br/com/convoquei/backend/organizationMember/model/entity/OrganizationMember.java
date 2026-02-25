@@ -14,6 +14,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(
@@ -132,5 +134,18 @@ public class OrganizationMember extends BaseEntity {
 
     public OffsetDateTime getLeftAt() {
         return leftAt;
+    }
+
+    public void markAsAbandoned() {
+        status = OrganizationMemberStatus.ABANDONED;
+        leftAt = OffsetDateTime.now();
+
+        keepOnlySystemMemberRole();
+    }
+
+    private void keepOnlySystemMemberRole() {
+        var memberKey = OrganizationDefaultSystemRole.MEMBER.getSystemKey();
+
+        roles.removeIf(r -> !memberKey.equals(r.getOrganizationRole().getSystemKey()));
     }
 }

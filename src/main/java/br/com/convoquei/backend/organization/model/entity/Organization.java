@@ -7,6 +7,7 @@ import br.com.convoquei.backend.organizationInvite.model.entity.OrganizationInvi
 import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMember;
 import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMemberRole;
 import br.com.convoquei.backend.organizationRole.model.entity.OrganizationRole;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 import br.com.convoquei.backend.user.model.entity.User;
 import jakarta.persistence.*;
 

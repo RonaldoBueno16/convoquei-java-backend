@@ -33,4 +33,11 @@ public class OrganizationMemberController {
     public PagedResponse<OrganizationMemberResponse> listMembers(@PathVariable UUID organizationId, @Valid @ModelAttribute ListMembersByOrganizationRequest request) {
         return organizationMemberService.listMembers(organizationId, request);
     }
+
+    @DeleteMapping("/{memberId}")
+    @RequiredOrganizationPermission(OrganizationPermission.KICK_MEMBERS)
+    public OrganizationMemberResponse kickMemberOfOrganization(@PathVariable UUID organizationId, @PathVariable UUID memberId) {
+        return organizationMemberService.kickMemberOfOrganization(organizationId, memberId);
+    }
+
 }
