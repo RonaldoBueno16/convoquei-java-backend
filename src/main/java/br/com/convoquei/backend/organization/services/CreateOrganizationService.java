@@ -5,7 +5,6 @@ import br.com.convoquei.backend.organization.model.dto.request.CreateOrganizatio
 import br.com.convoquei.backend.organization.model.dto.response.OrganizationResponse;
 import br.com.convoquei.backend.organization.model.entity.Organization;
 import br.com.convoquei.backend.organization.repository.OrganizationRepository;
-import br.com.convoquei.backend.organizationRole.services.OrganizationRoleSeederService;
 import br.com.convoquei.backend.user.model.entity.User;
 import br.com.convoquei.backend.user.provider.CurrentUserProvider;
 import jakarta.transaction.Transactional;
@@ -17,13 +16,11 @@ public class CreateOrganizationService {
     private final OrganizationRepository organizationRepository;
     private final SlugOrganizationService slugOrganizationService;
     private final CurrentUserProvider currentUserProvider;
-    private final OrganizationRoleSeederService organizationRoleSeederService;
 
-    public CreateOrganizationService(OrganizationRepository organizationRepository, SlugOrganizationService slugOrganizationService, CurrentUserProvider currentUserProvider, OrganizationRoleSeederService organizationRoleSeederService) {
+    public CreateOrganizationService(OrganizationRepository organizationRepository, SlugOrganizationService slugOrganizationService, CurrentUserProvider currentUserProvider) {
         this.organizationRepository = organizationRepository;
         this.slugOrganizationService = slugOrganizationService;
         this.currentUserProvider = currentUserProvider;
-        this.organizationRoleSeederService = organizationRoleSeederService;
     }
 
     @Transactional
@@ -35,10 +32,7 @@ public class CreateOrganizationService {
 
         User currentUser = currentUserProvider.requireUser();
 
-        Organization organization = new Organization(request.name(), slug);
-
-        organizationRoleSeederService.assignDefaultSystemRoles(organization);
-        organization.addOwner(currentUser);
+        Organization organization = new Organization(request.name(), slug, currentUser);
 
         organizationRepository.save(organization);
 

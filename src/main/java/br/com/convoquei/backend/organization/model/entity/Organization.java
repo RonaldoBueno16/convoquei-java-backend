@@ -7,7 +7,7 @@ import br.com.convoquei.backend.organizationInvite.model.entity.OrganizationInvi
 import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMember;
 import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMemberRole;
 import br.com.convoquei.backend.organizationRole.model.entity.OrganizationRole;
-import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationDefaultSystemRole;
 import br.com.convoquei.backend.user.model.entity.User;
 import jakarta.persistence.*;
 
@@ -25,11 +25,17 @@ public class Organization extends BaseEntity {
     protected Organization() {
     }
 
-    public Organization(String name, String slug) {
+    public Organization(String name, String slug, User owner) {
         this.name = name;
         this.slug = slug;
         this.status = OrganizationStatus.ACTIVE;
         this.photoUrl = "https://ui-avatars.com/api/?name=" + slug + "&background=1E90FF&size=256";
+
+        for (OrganizationDefaultSystemRole defaultRole : OrganizationDefaultSystemRole.values()) {
+            this.roles.add(OrganizationRole.createSystemRole(this, defaultRole));
+        }
+
+        addOwner(owner);
     }
 
     @Column(name = "name", nullable = false, length = 70)
@@ -68,20 +74,12 @@ public class Organization extends BaseEntity {
         return invite;
     }
 
-    public void addSystemRoles(List<OrganizationRole> systemRoles) {
-        for (OrganizationRole role : systemRoles) {
-            if (!role.isSystem())
-                throw new DomainBusinessRuleException("A função especificada não é uma função do sistema para ser adicionada.");
-
-            this.roles.add(role);
-        }
-    }
 
     public List<OrganizationMember> getMembers() {
         return members;
     }
 
-    public void addOwner(User user) {
+    private void addOwner(User user) {
         OrganizationMember member = addMember(user);
 
         OrganizationRole ownerRole = this.roles.stream()
