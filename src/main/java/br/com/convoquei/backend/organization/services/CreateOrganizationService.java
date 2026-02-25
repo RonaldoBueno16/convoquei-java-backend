@@ -38,7 +38,7 @@ public class CreateOrganizationService {
         Organization organization = new Organization(request.name(), slug);
 
         organizationRoleSeederService.assignDefaultSystemRoles(organization);
-        organization.assignInitialOwner(currentUser);
+        organization.addOwner(currentUser);
 
         organizationRepository.save(organization);
 

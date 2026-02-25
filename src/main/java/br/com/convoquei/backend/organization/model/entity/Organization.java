@@ -81,24 +81,25 @@ public class Organization extends BaseEntity {
         return members;
     }
 
-    public void assignInitialOwner(User user) {
+    public void addOwner(User user) {
+        OrganizationMember member = addMember(user);
+
         OrganizationRole ownerRole = this.roles.stream()
                 .filter(OrganizationRole::isOwner)
                 .findFirst()
                 .orElseThrow(() -> new DomainBusinessRuleException("A organização não possui uma função de proprietário definida."));
 
-        OrganizationMember ownerMember = new OrganizationMember(this, user);
-        ownerMember.addRole(ownerRole);
-
-        this.members.add(ownerMember);
+        member.addRole(ownerRole);
     }
 
-    public void addMember(User user) {
+    public OrganizationMember addMember(User user) {
         if (this.members.stream().anyMatch(m -> m.getUser().getId().equals(user.getId())))
             throw new DomainBusinessRuleException("O usuário especificado já é membro da organização.");
 
         OrganizationMember member = new OrganizationMember(this, user);
         this.members.add(member);
+
+        return member;
     }
 
     public String getName() {
