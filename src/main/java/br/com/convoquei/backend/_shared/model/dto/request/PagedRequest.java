@@ -3,6 +3,7 @@ package br.com.convoquei.backend._shared.model.dto.request;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 public class PagedRequest {
 
@@ -22,5 +23,11 @@ public class PagedRequest {
         int p = page == null ? 0 : page;
         int s = size == null ? 10 : size;
         return PageRequest.of(p, s);
+    }
+
+    public PageRequest toPageRequest(Sort sort) {
+        int p = page == null ? 0 : page;
+        int s = size == null ? 10 : size;
+        return PageRequest.of(p, s, sort);
     }
 }

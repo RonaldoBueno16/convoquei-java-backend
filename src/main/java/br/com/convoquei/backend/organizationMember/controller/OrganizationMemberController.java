@@ -1,9 +1,13 @@
 package br.com.convoquei.backend.organizationMember.controller;
 
+import br.com.convoquei.backend._shared.model.dto.response.PagedResponse;
 import br.com.convoquei.backend._shared.security.annotation.RequiredOrganizationPermission;
+import br.com.convoquei.backend.organizationMember.model.dto.request.ListMembersByOrganizationRequest;
 import br.com.convoquei.backend.organizationMember.model.dto.response.MyMemberhipResponse;
+import br.com.convoquei.backend.organizationMember.model.dto.response.OrganizationMemberResponse;
 import br.com.convoquei.backend.organizationMember.services.OrganizationMemberService;
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -18,9 +22,15 @@ public class OrganizationMemberController {
         this.organizationMemberService = organizationMemberService;
     }
 
-    @RequiredOrganizationPermission(OrganizationPermission.MEMBER)
     @GetMapping("/me")
+    @RequiredOrganizationPermission(OrganizationPermission.MEMBER)
     public MyMemberhipResponse getMembership(@PathVariable UUID organizationId) {
         return organizationMemberService.getMembership(organizationId);
+    }
+
+    @GetMapping
+    @RequiredOrganizationPermission(OrganizationPermission.MEMBER)
+    public PagedResponse<OrganizationMemberResponse> listMembers(@PathVariable UUID organizationId, @Valid @ModelAttribute ListMembersByOrganizationRequest request) {
+        return organizationMemberService.listMembers(organizationId, request);
     }
 }

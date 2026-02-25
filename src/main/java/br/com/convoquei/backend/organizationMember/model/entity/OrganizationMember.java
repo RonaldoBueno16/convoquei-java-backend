@@ -122,5 +122,15 @@ public class OrganizationMember extends BaseEntity {
         return status;
     }
 
+    public List<OrganizationMemberRole> getRoles() {
+        return roles;
+    }
 
+    public OffsetDateTime getJoinedAt() {
+        return joinedAt;
+    }
+
+    public OffsetDateTime getLeftAt() {
+        return leftAt;
+    }
 }
