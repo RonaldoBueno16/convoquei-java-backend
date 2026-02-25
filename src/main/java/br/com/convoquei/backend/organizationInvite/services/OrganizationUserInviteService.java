@@ -11,14 +11,11 @@ import br.com.convoquei.backend.organizationInvite.model.entity.OrganizationInvi
 import br.com.convoquei.backend.organizationInvite.repository.OrganizationInviteRepository;
 import br.com.convoquei.backend.user.model.entity.User;
 import br.com.convoquei.backend.user.provider.CurrentUserProvider;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -90,5 +87,4 @@ public class OrganizationUserInviteService {
                 .filter(invite -> invite.getInvitedEmail().equalsIgnoreCase(user.getEmail()))
                 .orElseThrow(OrganizationInviteNotFoundException::new);
     }
-
 }
