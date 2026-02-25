@@ -10,6 +10,7 @@ import br.com.convoquei.backend.organizationRole.model.dto.response.Organization
 import br.com.convoquei.backend.organizationRole.model.dto.response.OrganizationRoleResponse;
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 import br.com.convoquei.backend.organizationRole.services.OrganizationRoleService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,14 @@ public class OrganizationRoleController {
     }
 
     @GetMapping("/permissions")
+    @Operation(summary = "Listar permissões disponíveis da organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public List<OrganizationPermissionResponse> listAvailablePermissions(@PathVariable UUID organizationId) {
         return organizationRoleService.listAvailablePermissions();
     }
 
     @GetMapping
+    @Operation(summary = "Listar cargos da organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public PagedResponse<OrganizationRoleResponse> listRoles(
             @PathVariable UUID organizationId,
@@ -42,6 +45,7 @@ public class OrganizationRoleController {
     }
 
     @GetMapping("/{roleId}")
+    @Operation(summary = "Obter detalhes de um cargo da organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public OrganizationRoleDetailResponse getRole(
             @PathVariable UUID organizationId,
@@ -51,6 +55,7 @@ public class OrganizationRoleController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Criar cargo na organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public OrganizationRoleDetailResponse createRole(
             @PathVariable UUID organizationId,
@@ -59,6 +64,7 @@ public class OrganizationRoleController {
     }
 
     @PatchMapping("/{roleId}/permissions")
+    @Operation(summary = "Atualizar permissões de um cargo da organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public OrganizationRoleDetailResponse updateRolePermissions(
             @PathVariable UUID organizationId,
@@ -69,6 +75,7 @@ public class OrganizationRoleController {
 
     @DeleteMapping("/{roleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Excluir cargo da organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public void deleteRole(
             @PathVariable UUID organizationId,
@@ -78,6 +85,7 @@ public class OrganizationRoleController {
 
     @PostMapping("/{roleId}/members/{memberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Atribuir cargo a um membro da organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public void assignRole(
             @PathVariable UUID organizationId,
@@ -88,6 +96,7 @@ public class OrganizationRoleController {
 
     @DeleteMapping("/{roleId}/members/{memberId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Remover cargo de um membro da organização")
     @RequiredOrganizationPermission(OrganizationPermission.OWNER)
     public void unassignRole(
             @PathVariable UUID organizationId,

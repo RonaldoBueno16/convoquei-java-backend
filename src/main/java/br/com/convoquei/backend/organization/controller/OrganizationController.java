@@ -7,6 +7,7 @@ import br.com.convoquei.backend.organization.model.dto.response.OrganizationResp
 import br.com.convoquei.backend.organization.services.CreateOrganizationService;
 import br.com.convoquei.backend.organization.services.ListOrganizationByMemberService;
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,13 @@ public class OrganizationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Criar organização")
     public OrganizationResponse createOrganization(@RequestBody @Valid CreateOrganizationRequest request) {
         return createOrganizationService.create(request);
     }
 
     @GetMapping
+    @Operation(summary = "Listar organizações do membro autenticado")
     public PagedResponse<OrganizationResponse> listOrganizations(@Valid @ModelAttribute ListOrganizationsByMemberRequest request) {
         return listOrganizationByMemberService.listByMember(request);
     }

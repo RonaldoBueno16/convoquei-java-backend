@@ -7,6 +7,7 @@ import br.com.convoquei.backend.organizationMember.model.dto.response.MyMemberhi
 import br.com.convoquei.backend.organizationMember.model.dto.response.OrganizationMemberResponse;
 import br.com.convoquei.backend.organizationMember.services.OrganizationMemberService;
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,18 +24,21 @@ public class OrganizationMemberController {
     }
 
     @GetMapping("/me")
+    @Operation(summary = "Obter dados de membro da organização do usuário autenticado")
     @RequiredOrganizationPermission(OrganizationPermission.MEMBER)
     public MyMemberhipResponse getMembership(@PathVariable UUID organizationId) {
         return organizationMemberService.getMembership(organizationId);
     }
 
     @GetMapping
+    @Operation(summary = "Listar membros da organização")
     @RequiredOrganizationPermission(OrganizationPermission.MEMBER)
     public PagedResponse<OrganizationMemberResponse> listMembers(@PathVariable UUID organizationId, @Valid @ModelAttribute ListMembersByOrganizationRequest request) {
         return organizationMemberService.listMembers(organizationId, request);
     }
 
     @DeleteMapping("/{memberId}")
+    @Operation(summary = "Remover membro da organização")
     @RequiredOrganizationPermission(OrganizationPermission.KICK_MEMBERS)
     public OrganizationMemberResponse kickMemberOfOrganization(@PathVariable UUID organizationId, @PathVariable UUID memberId) {
         return organizationMemberService.kickMemberOfOrganization(organizationId, memberId);
