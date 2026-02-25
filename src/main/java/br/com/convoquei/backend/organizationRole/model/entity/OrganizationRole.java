@@ -4,9 +4,12 @@ import br.com.convoquei.backend._shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.organization.model.entity.Organization;
 import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMemberRole;
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationDefaultSystemRole;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
+import br.com.convoquei.backend.organizationRole.model.valueobject.PermissionMask;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 @Entity
@@ -41,6 +44,19 @@ public class OrganizationRole extends BaseEntity {
         role.permissionsMask = defaultRole.getPermissionsMask();
         role.systemKey = defaultRole.getSystemKey();
         return role;
+    }
+
+    public static OrganizationRole createCustomRole(Organization organization, String name, EnumSet<OrganizationPermission> permissions) {
+        OrganizationRole role = new OrganizationRole();
+        role.organization = organization;
+        role.name = name;
+        role.permissionsMask = PermissionMask.toMask(permissions);
+        role.systemKey = null;
+        return role;
+    }
+
+    public void updatePermissions(EnumSet<OrganizationPermission> permissions) {
+        this.permissionsMask = PermissionMask.toMask(permissions);
     }
 
     public Organization getOrganization() {
