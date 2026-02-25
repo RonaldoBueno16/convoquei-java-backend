@@ -28,6 +28,7 @@ public class Organization extends BaseEntity {
         this.name = name;
         this.slug = slug;
         this.status = OrganizationStatus.ACTIVE;
+        this.photoUrl = "https://ui-avatars.com/api/?name=" + slug + "&background=1E90FF&size=256";
     }
 
     @Column(name = "name", nullable = false, length = 70)
@@ -36,7 +37,7 @@ public class Organization extends BaseEntity {
     @Column(name = "slug", nullable = false, length = 150, unique = true)
     private String slug;
 
-    @Column(name = "photo_url", columnDefinition = "text")
+    @Column(name = "photo_url", columnDefinition = "text", nullable = false)
     private String photoUrl;
 
     @Enumerated(EnumType.STRING)
@@ -91,6 +92,14 @@ public class Organization extends BaseEntity {
         this.members.add(ownerMember);
     }
 
+    public void addMember(User user) {
+        if (this.members.stream().anyMatch(m -> m.getUser().getId().equals(user.getId())))
+            throw new DomainBusinessRuleException("O usuário especificado já é membro da organização.");
+
+        OrganizationMember member = new OrganizationMember(this, user);
+        this.members.add(member);
+    }
+
     public String getName() {
         return name;
     }
@@ -105,6 +114,10 @@ public class Organization extends BaseEntity {
 
     public OrganizationStatus getStatus() {
         return status;
+    }
+
+    public List<OrganizationRole> getRoles() {
+        return roles;
     }
 
 }

@@ -1,9 +1,11 @@
 package br.com.convoquei.backend.organizationMember.model.entity;
 
+import br.com.convoquei.backend._shared.exceptions.DomainBusinessRuleException;
 import br.com.convoquei.backend._shared.model.entity.BaseEntity;
 import br.com.convoquei.backend.organization.model.entity.Organization;
 import br.com.convoquei.backend.organizationRole.model.entity.OrganizationRole;
 import br.com.convoquei.backend.organizationMember.model.enums.OrganizationMemberStatus;
+import br.com.convoquei.backend.organizationRole.model.enums.OrganizationDefaultSystemRole;
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 import br.com.convoquei.backend.user.model.entity.User;
 import jakarta.persistence.*;
@@ -34,6 +36,7 @@ public class OrganizationMember extends BaseEntity {
         this.status = OrganizationMemberStatus.ACTIVE;
         this.joinedAt = OffsetDateTime.now();
         this.leftAt = null;
+        this.roles.add(new OrganizationMemberRole(this, findSystemRole(OrganizationDefaultSystemRole.MEMBER)));
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -98,6 +101,13 @@ public class OrganizationMember extends BaseEntity {
     public void addRole(OrganizationRole role) {
         OrganizationMemberRole memberRole = new OrganizationMemberRole(this, role);
         this.roles.add(memberRole);
+    }
+
+    private OrganizationRole findSystemRole(OrganizationDefaultSystemRole defaultRole) {
+        return organization.getRoles().stream()
+                .filter(role -> role.isSystem() && role.getSystemKey().equals(defaultRole.getSystemKey()))
+                .findFirst()
+                .orElseThrow(() -> new DomainBusinessRuleException("A organização não possui a função do sistema " + defaultRole.getDisplayName() + " definida."));
     }
 
     public Organization getOrganization() {

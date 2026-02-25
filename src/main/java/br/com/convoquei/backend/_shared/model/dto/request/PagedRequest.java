@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.PageRequest;
 
-public abstract class PagedRequestBase {
+public class PagedRequest {
 
     @Min(0)
     private Integer page = 0;

@@ -46,10 +46,8 @@ public class CurrentUserProvider {
         return Optional.ofNullable(jwtAuth.getToken().getClaimAsString("email"));
     }
 
-    public User user() {
-        UUID userId = extractUserIdFromAuthentication().orElseThrow(() -> new AccessDeniedException("Usuário não autenticado."));
-
-        return userRepository.findById(userId).orElseThrow(() -> new AccessDeniedException("Usuário não encontrado."));
+    public User requireUser() {
+        return userRepository.findById(requireUserId()).orElseThrow(() -> new AccessDeniedException("Usuário não encontrado."));
     }
 
     public Optional<OrganizationMember> organizationMembership(UUID organizationId) {

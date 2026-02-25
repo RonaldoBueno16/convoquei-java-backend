@@ -18,7 +18,8 @@ import java.time.OffsetDateTime;
         }
 )
 public class OrganizationInvite extends BaseEntity {
-    protected OrganizationInvite() {}
+    protected OrganizationInvite() {
+    }
 
     public OrganizationInvite(Organization organization, OrganizationMember memberInvite, String invitedEmail) {
         this.organization = organization;
@@ -51,5 +52,21 @@ public class OrganizationInvite extends BaseEntity {
 
     public String getInvitedEmail() {
         return invitedEmail;
+    }
+
+    public OffsetDateTime getExpiresAt() {
+        return expiresAt;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public OrganizationMember getInvitedBy() {
+        return invitedBy;
+    }
+
+    public boolean isExpired() {
+        return expiresAt.isBefore(OffsetDateTime.now());
     }
 }

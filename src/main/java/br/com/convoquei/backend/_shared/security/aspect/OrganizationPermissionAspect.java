@@ -31,7 +31,7 @@ public class OrganizationPermissionAspect {
     @Before("@annotation(requiredPermission)")
     public void checkPermission(JoinPoint joinPoint, RequiredOrganizationPermission requiredPermission) {
         UUID organizationId = resolveOrganizationId();
-        UUID userId = currentUserProvider.userId().orElseThrow(() -> new AccessDeniedException("Usuário não autenticado."));
+        UUID userId = currentUserProvider.requireUserId();
 
         organizationPermissionService.assertHasPermission(organizationId, userId, requiredPermission.value());
     }

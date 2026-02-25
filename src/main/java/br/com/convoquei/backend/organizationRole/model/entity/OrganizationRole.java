@@ -62,4 +62,8 @@ public class OrganizationRole extends BaseEntity {
     public String getName() {
         return name;
     }
+
+    public String getSystemKey() {
+        return systemKey;
+    }
 }

@@ -2,6 +2,7 @@ package br.com.convoquei.backend._shared.api.handlers;
 
 import br.com.convoquei.backend._shared.exceptions.DomainBusinessRuleException;
 import br.com.convoquei.backend._shared.exceptions.DomainConflictException;
+import br.com.convoquei.backend._shared.exceptions.DomainNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -87,6 +88,14 @@ public class ApiExceptionHandler {
     public ProblemDetail handleDomain(DomainBusinessRuleException ex, HttpServletRequest request) {
         var problem = base(HttpStatus.UNPROCESSABLE_CONTENT, ex.getMessage(), request);
         problem.setTitle("Não foi possível processar a requisição");
+        problem.setType(URI.create("urn:convoquei:problem:domain-error"));
+        return problem;
+    }
+
+    @ExceptionHandler(DomainNotFoundException.class)
+    public ProblemDetail handleDomain(DomainNotFoundException ex, HttpServletRequest request) {
+        var problem = base(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+        problem.setTitle("Recurso não encontrado ou estado inválido para a operação");
         problem.setType(URI.create("urn:convoquei:problem:domain-error"));
         return problem;
     }

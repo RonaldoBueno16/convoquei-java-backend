@@ -36,7 +36,7 @@ public class CreateOrganizationService {
             throw new DomainConflictException("Já existe uma organização com esse nome.");
         }
 
-        User currentUser = currentUserProvider.user();
+        User currentUser = currentUserProvider.requireUser();
 
         Organization organization = new Organization(request.name(), slug);
 
