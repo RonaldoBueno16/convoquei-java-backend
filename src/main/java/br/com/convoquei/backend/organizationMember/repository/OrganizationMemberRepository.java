@@ -1,6 +1,6 @@
 package br.com.convoquei.backend.organizationMember.repository;
 
-import br.com.convoquei.backend._template.repository.BaseRepository;
+import br.com.convoquei.backend._shared.repository.BaseRepository;
 import br.com.convoquei.backend.organizationMember.model.entity.OrganizationMember;
 import br.com.convoquei.backend.organizationMember.model.enums.OrganizationMemberStatus;
 import org.springframework.data.jpa.repository.EntityGraph;

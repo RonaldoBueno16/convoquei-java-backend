@@ -1,6 +1,6 @@
 package br.com.convoquei.backend.user.repository;
 
-import br.com.convoquei.backend._template.repository.BaseRepository;
+import br.com.convoquei.backend._shared.repository.BaseRepository;
 import br.com.convoquei.backend.user.model.entity.User;
 
 import java.util.Optional;

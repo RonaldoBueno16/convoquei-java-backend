@@ -1,6 +1,6 @@
 package br.com.convoquei.backend.organizationInvite.repository;
 
-import br.com.convoquei.backend._template.repository.BaseRepository;
+import br.com.convoquei.backend._shared.repository.BaseRepository;
 import br.com.convoquei.backend.organizationInvite.model.dto.response.OrganizationInviteDetailsResponse;
 import br.com.convoquei.backend.organizationInvite.model.entity.OrganizationInvite;
 import org.springframework.data.domain.Page;
