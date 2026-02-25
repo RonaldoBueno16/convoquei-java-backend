@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -142,6 +143,14 @@ public class ApiExceptionHandler {
         var problem = base(HttpStatus.FORBIDDEN, ex.getMessage(), request);
         problem.setTitle("Acesso Negado");
         problem.setType(URI.create("urn:convoquei:problem:forbidden"));
+        return problem;
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ProblemDetail handleAuthentication(AuthenticationException ex, HttpServletRequest request) {
+        var problem = base(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
+        problem.setTitle("Não autenticado");
+        problem.setType(URI.create("urn:convoquei:problem:unauthorized"));
         return problem;
     }
 
