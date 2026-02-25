@@ -5,7 +5,8 @@ public enum OrganizationPermission {
     OWNER(0, "Dono da Organizacao"),// 1
     MEMBER(1, "Permissao para acessar recursos da organizacao"), //2
     INVITE_MEMBERS(2, "Permissao para convidar membros"), // 4
-    KICK_MEMBERS(3, "Permissao para remover membros"); // 8
+    KICK_MEMBERS(3, "Permissao para remover membros"), // 8
+    MANAGE_GROUPS(4, "Permissao para gerenciar grupos da organizacao"); // 16
 
     private final int bitIndex;
     private final String description;

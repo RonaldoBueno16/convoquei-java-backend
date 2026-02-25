@@ -3,7 +3,7 @@ package br.com.convoquei.backend.organizationMember.services;
 import br.com.convoquei.backend._shared.exceptions.DomainBusinessRuleException;
 import br.com.convoquei.backend._shared.exceptions.DomainNotFoundException;
 import br.com.convoquei.backend._shared.model.dto.response.PagedResponse;
-import br.com.convoquei.backend.organization.model.entity.Organization;
+import br.com.convoquei.backend.organizationGroup.repository.OrganizationGroupParticipantRepository;
 import br.com.convoquei.backend.organizationMember.model.dto.request.ListMembersByOrganizationRequest;
 import br.com.convoquei.backend.organizationMember.model.dto.response.MyMemberhipResponse;
 import br.com.convoquei.backend.organizationMember.model.dto.response.OrganizationMemberResponse;
@@ -26,10 +26,12 @@ public class OrganizationMemberService {
 
     private final CurrentUserProvider currentUserProvider;
     private final OrganizationMemberRepository organizationMemberRepository;
+    private final OrganizationGroupParticipantRepository organizationGroupParticipantRepository;
 
-    public OrganizationMemberService(CurrentUserProvider currentUserProvider, OrganizationMemberRepository organizationMemberRepository) {
+    public OrganizationMemberService(CurrentUserProvider currentUserProvider, OrganizationMemberRepository organizationMemberRepository, OrganizationGroupParticipantRepository organizationGroupParticipantRepository) {
         this.currentUserProvider = currentUserProvider;
         this.organizationMemberRepository = organizationMemberRepository;
+        this.organizationGroupParticipantRepository = organizationGroupParticipantRepository;
     }
 
     public MyMemberhipResponse getMembership(UUID organizationId) {
@@ -59,6 +61,7 @@ public class OrganizationMemberService {
 
         memberToKick.markAsAbandoned();
 
+        organizationGroupParticipantRepository.deleteAllByOrganizationMemberId(memberToKick.getId());
         organizationMemberRepository.save(memberToKick);
 
         return OrganizationMemberResponse.buildFromMember(memberToKick);
