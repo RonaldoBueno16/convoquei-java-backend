@@ -4,14 +4,10 @@ import br.com.convoquei.backend._shared.model.dto.response.PagedResponse;
 import br.com.convoquei.backend.organization.model.dto.request.CreateOrganizationRequest;
 import br.com.convoquei.backend.organization.model.dto.request.ListOrganizationsByMemberRequest;
 import br.com.convoquei.backend.organization.model.dto.response.OrganizationResponse;
-import br.com.convoquei.backend.organization.repository.OrganizationRepository;
 import br.com.convoquei.backend.organization.services.CreateOrganizationService;
 import br.com.convoquei.backend.organization.services.ListOrganizationByMemberService;
-import br.com.convoquei.backend.user.model.entity.User;
-import br.com.convoquei.backend.user.provider.CurrentUserProvider;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,8 +23,9 @@ public class OrganizationController {
     }
 
     @PostMapping
-    public void createOrganization(@RequestBody @Valid CreateOrganizationRequest request) {
-        createOrganizationService.create(request);
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrganizationResponse createOrganization(@RequestBody @Valid CreateOrganizationRequest request) {
+        return createOrganizationService.create(request);
     }
 
     @GetMapping

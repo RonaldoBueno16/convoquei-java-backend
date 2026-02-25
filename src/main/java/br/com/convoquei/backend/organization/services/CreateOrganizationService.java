@@ -1,18 +1,15 @@
 package br.com.convoquei.backend.organization.services;
 
-import br.com.convoquei.backend._shared.exceptions.DomainBusinessRuleException;
 import br.com.convoquei.backend._shared.exceptions.DomainConflictException;
 import br.com.convoquei.backend.organization.model.dto.request.CreateOrganizationRequest;
+import br.com.convoquei.backend.organization.model.dto.response.OrganizationResponse;
 import br.com.convoquei.backend.organization.model.entity.Organization;
 import br.com.convoquei.backend.organization.repository.OrganizationRepository;
-import br.com.convoquei.backend.organizationRole.model.entity.OrganizationRole;
 import br.com.convoquei.backend.organizationRole.services.OrganizationRoleSeederService;
 import br.com.convoquei.backend.user.model.entity.User;
 import br.com.convoquei.backend.user.provider.CurrentUserProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CreateOrganizationService {
@@ -30,7 +27,7 @@ public class CreateOrganizationService {
     }
 
     @Transactional
-    public void create(CreateOrganizationRequest request) {
+    public OrganizationResponse create(CreateOrganizationRequest request) {
         var slug = slugOrganizationService.generate(request.name());
         if (!slugOrganizationService.isUnique(slug)) {
             throw new DomainConflictException("Já existe uma organização com esse nome.");
@@ -44,5 +41,7 @@ public class CreateOrganizationService {
         organization.assignInitialOwner(currentUser);
 
         organizationRepository.save(organization);
+
+        return OrganizationResponse.buildFromOrganization(organization);
     }
 }
