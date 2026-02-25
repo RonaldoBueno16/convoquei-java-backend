@@ -11,6 +11,10 @@ import br.com.convoquei.backend.organizationGroup.model.dto.response.Organizatio
 import br.com.convoquei.backend.organizationGroup.services.OrganizationGroupService;
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,10 @@ public class OrganizationGroupController {
 
     @GetMapping
     @Operation(summary = "Listar grupos da organização")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso",
+            content = @Content(schema = @Schema(implementation = PagedResponse.class)))
+    })
     @RequiredOrganizationPermission(OrganizationPermission.MEMBER)
     public PagedResponse<OrganizationGroupResponse> listGroups(
             @PathVariable UUID organizationId,
@@ -40,6 +48,10 @@ public class OrganizationGroupController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Criar grupo na organização")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Grupo criado com sucesso",
+            content = @Content(schema = @Schema(implementation = OrganizationGroupResponse.class)))
+    })
     @RequiredOrganizationPermission(OrganizationPermission.MANAGE_GROUPS)
     public OrganizationGroupResponse createGroup(
             @PathVariable UUID organizationId,
@@ -50,6 +62,10 @@ public class OrganizationGroupController {
 
     @GetMapping("/{groupId}/participants")
     @Operation(summary = "Listar participantes do grupo")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso",
+            content = @Content(schema = @Schema(implementation = PagedResponse.class)))
+    })
     @RequiredOrganizationPermission(OrganizationPermission.MEMBER)
     public PagedResponse<OrganizationGroupParticipantResponse> getParticipants(
             @PathVariable UUID organizationId,
@@ -61,6 +77,10 @@ public class OrganizationGroupController {
 
     @PostMapping("/{groupId}/participants")
     @Operation(summary = "Adicionar participante no grupo")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Participante adicionado com sucesso",
+            content = @Content(schema = @Schema(implementation = OrganizationGroupResponse.class)))
+    })
     @RequiredOrganizationPermission(OrganizationPermission.MANAGE_GROUPS)
     public OrganizationGroupResponse addParticipant(
             @PathVariable UUID organizationId,
@@ -72,6 +92,10 @@ public class OrganizationGroupController {
 
     @DeleteMapping("/{groupId}/participants/{participantId}")
     @Operation(summary = "Remover participante do grupo")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Participante removido com sucesso",
+            content = @Content(schema = @Schema(implementation = OrganizationGroupResponse.class)))
+    })
     @RequiredOrganizationPermission(OrganizationPermission.MANAGE_GROUPS)
     public OrganizationGroupResponse removeParticipant(
             @PathVariable UUID organizationId,
@@ -83,6 +107,10 @@ public class OrganizationGroupController {
 
     @DeleteMapping("/{groupId}/participants")
     @Operation(summary = "Remover todos os participantes do grupo")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Participantes removidos com sucesso",
+            content = @Content(schema = @Schema(implementation = OrganizationGroupResponse.class)))
+    })
     @RequiredOrganizationPermission(OrganizationPermission.MANAGE_GROUPS)
     public OrganizationGroupResponse clearGroup(
             @PathVariable UUID organizationId,
@@ -94,6 +122,9 @@ public class OrganizationGroupController {
     @DeleteMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Excluir grupo da organização")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Grupo excluído com sucesso")
+    })
     @RequiredOrganizationPermission(OrganizationPermission.MANAGE_GROUPS)
     public void deleteGroup(
             @PathVariable UUID organizationId,
@@ -102,6 +133,3 @@ public class OrganizationGroupController {
         organizationGroupService.deleteGroup(organizationId, groupId);
     }
 }
-
-
-

@@ -8,6 +8,10 @@ import br.com.convoquei.backend.user.model.dto.response.UserResponse;
 import br.com.convoquei.backend.user.services.GenerateTokenUserService;
 import br.com.convoquei.backend.user.services.CreateUserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +36,10 @@ public class UserAuthController {
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Registrar novo usuário")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso",
+            content = @Content(schema = @Schema(implementation = UserResponse.class)))
+    })
     public UserResponse createUser(@RequestBody @Valid CreateUserRequest request) {
         return CreateUserService.execute(request);
     }
@@ -39,6 +47,10 @@ public class UserAuthController {
     @PostMapping("login")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Autenticar usuário e obter token de acesso")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Autenticação realizada com sucesso",
+            content = @Content(schema = @Schema(implementation = TokenResponse.class)))
+    })
     public TokenResponse login(@RequestBody LoginRequest request) {
         var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())

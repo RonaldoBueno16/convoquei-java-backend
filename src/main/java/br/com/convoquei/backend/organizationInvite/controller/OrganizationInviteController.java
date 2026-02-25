@@ -6,6 +6,10 @@ import br.com.convoquei.backend.organizationInvite.model.dto.response.Organizati
 import br.com.convoquei.backend.organizationRole.model.enums.OrganizationPermission;
 import br.com.convoquei.backend.organizationInvite.services.OrganizationInviteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,10 @@ public class OrganizationInviteController {
 
     @PostMapping
     @Operation(summary = "Convidar membro para a organização")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Convite enviado com sucesso",
+            content = @Content(schema = @Schema(implementation = OrganizationInviteResponse.class)))
+    })
     @RequiredOrganizationPermission(OrganizationPermission.INVITE_MEMBERS)
     public OrganizationInviteResponse inviteMember(@PathVariable UUID organizationId, @RequestBody @Valid InviteMemberRequest request) {
         return organizationInviteService.invite(organizationId, request.email());
@@ -30,6 +38,9 @@ public class OrganizationInviteController {
 
     @DeleteMapping("/{email}")
     @Operation(summary = "Revogar convite de membro da organização")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Convite revogado com sucesso")
+    })
     @RequiredOrganizationPermission(OrganizationPermission.INVITE_MEMBERS)
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void revokeInvite(@PathVariable UUID organizationId, @PathVariable String email) {
